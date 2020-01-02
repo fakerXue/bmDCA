@@ -44,7 +44,7 @@ COUNT_MAX=10 # number of independent MCMC runs
 # MC_init=0 # 1 se si dispone di un campionamento di equilibio iniziale
 # MC_file_input=../PCDSHUFCHECK_REP_M10000_TWF100000_DT1000_MAX0.1MIN0001_L-2_fromPLM_2/MC_analysis_150_long40/MC_samples_ERG.txt
 PAR_init=1 # 0 choose for user defined parameter initialization, 1 for independent model initialization
-Parameters_input=../OUTPUT_smallcoup/parameters_learnt_50.txt #starting parameter file
+# Parameters_input=../OUTPUT_smallcoup/parameters_learnt_50.txt #starting parameter file
 
 # LEARNING RATE
 LEARN_init=1 # 0 choose for user defined learning rates, 1 for homogeneous initialization
@@ -65,7 +65,8 @@ COUNT_CHECK=$COUNT_MAX #
 MSA_file=../$1
 echo $MSA_file
 Weights_file=../$2
-Output_folder=$3
+Relentropy_file=../$3
+Output_folder=$4
 MC_file=MC_samples.txt
 
 # Test_file=../INPUT/msa.txt
@@ -81,6 +82,12 @@ N=$(head -1 $MSA_file | awk '{print $2}')
 Q=$(head -1 $MSA_file | awk '{print $3}')
 
 MAX_STEPJ=$(ps -ef | awk -v MAX_STEPJ_N=$MAX_STEPJ_N -v N=$N 'BEGIN{print MAX_STEPJ_N/N}')
+
+# echo $MAX_STEPJ
+# echo ps -ef | awk -v MAX_STEPJ_N=$MAX_STEPJ_N -v N=$N 'BEGIN{print MAX_STEPJ_N/N}'
+# 
+# exit
+
 
 rm -f out*
 rm -f parameters_learnt*
@@ -121,7 +128,7 @@ then
   initialize_ind $N $Q parameters_temp.txt stat_align_1p.txt $PSEUDOCOUNT_IND
 else
   echo "Starting point: user-defined model"
-  cp $Parameters_input parameters_temp.txt
+  # cp $Parameters_input parameters_temp.txt
 fi
 
 if [ $LEARN_init == '1' ]
@@ -320,7 +327,8 @@ do
       stat_MC_2p_sigma.txt \
       parameters_temp.txt \
       $ERROR_MIN_UPDATE \
-      $MEFF
+      $MEFF \
+      $Relentropy_file
 
     ###### check error
 
@@ -369,7 +377,8 @@ do
         $M_CHECK \
         $COUNT_CHECK \
         $MSA_file \
-        $Weights_file
+        $Weights_file \
+        $Relentropy_file
     fi
 
     ##### 3h save parameters
