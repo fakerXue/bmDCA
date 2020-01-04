@@ -200,8 +200,10 @@ Sim::initializeParameters(void)
   count_check = count_max;
 }
 
-Sim::Sim(MSAStats msa_stats)
-  : msa_stats(msa_stats)
+// Sim::Sim(MSAStats msa_stats)
+//   : msa_stats(msa_stats)
+Sim::Sim(MSAStats msa_stats, bool use_pos_reg_flag)
+  : msa_stats(msa_stats), use_pos_reg(use_pos_reg_flag)
 {
   initializeParameters();
   current_model = new Model(msa_stats, epsilon_0_h, epsilon_0_J);
@@ -476,17 +478,29 @@ Sim::computeErrorReparametrization(void)
     for (int j = i + 1; j < N; j++) {
       for (int aa1 = 0; aa1 < Q; aa1++) {
         for (int aa2 = 0; aa2 < Q; aa2++) {
-          delta = -(msa_stats.frequency_2p.at(i, j).at(aa1, aa2) -
-                    mcmc_stats->frequency_2p.at(i, j).at(aa1, aa2) +
-                    (mcmc_stats->frequency_1p.at(aa1, i) -
-                     msa_stats.frequency_1p.at(aa1, i)) *
-                      msa_stats.frequency_1p.at(aa2, j) +
-                    (mcmc_stats->frequency_1p.at(aa2, j) -
-                     msa_stats.frequency_1p.at(aa2, j)) *
-                      msa_stats.frequency_1p.at(aa1, i) -
-                    lambda_j * current_model->params.J.at(i, j).at(aa1, aa2) *
-                      1. / (1. + fabs(msa_stats.rel_entropy_grad_1p(aa1, i))) /
-                      (1. + fabs(msa_stats.rel_entropy_grad_1p(aa2, j))));
+          if (use_pos_reg) {
+            delta = -(msa_stats.frequency_2p.at(i, j).at(aa1, aa2) -
+                      mcmc_stats->frequency_2p.at(i, j).at(aa1, aa2) +
+                      (mcmc_stats->frequency_1p.at(aa1, i) -
+                       msa_stats.frequency_1p.at(aa1, i)) *
+                        msa_stats.frequency_1p.at(aa2, j) +
+                      (mcmc_stats->frequency_1p.at(aa2, j) -
+                       msa_stats.frequency_1p.at(aa2, j)) *
+                        msa_stats.frequency_1p.at(aa1, i) -
+                      lambda_j * current_model->params.J.at(i, j).at(aa1, aa2) *
+                        1. / (1. + fabs(msa_stats.rel_entropy_grad_1p(aa1, i))) /
+                        (1. + fabs(msa_stats.rel_entropy_grad_1p(aa2, j))));
+          } else {
+            delta = -(msa_stats.frequency_2p.at(i, j).at(aa1, aa2) -
+                      mcmc_stats->frequency_2p.at(i, j).at(aa1, aa2) +
+                      (mcmc_stats->frequency_1p.at(aa1, i) -
+                       msa_stats.frequency_1p.at(aa1, i)) *
+                        msa_stats.frequency_1p.at(aa2, j) +
+                      (mcmc_stats->frequency_1p.at(aa2, j) -
+                       msa_stats.frequency_1p.at(aa2, j)) *
+                        msa_stats.frequency_1p.at(aa1, i) -
+                      lambda_j * current_model->params.J.at(i, j).at(aa1, aa2));
+          }
           delta_stat =
             (mcmc_stats->frequency_2p.at(i, j).at(aa1, aa2) -
              msa_stats.frequency_2p.at(i, j).at(aa1, aa2)) /
