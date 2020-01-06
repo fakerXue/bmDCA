@@ -29,7 +29,7 @@ public:
   Sim(MSAStats, bool = false);
   ~Sim(void);
   void run(void);
-  MSA runMCMC(MSAStats msaStats);
+  void writeParameters(std::string);
 
 private:
   void initializeParameters(void);
