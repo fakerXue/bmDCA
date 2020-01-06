@@ -85,8 +85,7 @@ private:
                                 // initializing the mcmc from a file
   std::string init_sample_file; // name of file with mcmc initial sample
   bool use_pos_reg = false;     // enable for position-specific regularizetion
-  // bool use_sca_weight; // whether or not to use rel. entropy for position-
-  //                      // specific regularization
+  double temperature;           // temperature at which to sample potts model
 
   // Check routine settings
   int t_wait_check;  // t_wait
