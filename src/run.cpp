@@ -238,6 +238,8 @@ Sim::writeParameters(std::string output_file)
   stream << "M=" << M << std::endl;
   stream << "count_max=" << count_max << std::endl;
   stream << "init_sample=" << init_sample << std::endl;
+  stream << "init_sample_file=" << init_sample_file << std::endl;
+  stream << "use_pos_reg=" << use_pos_reg << std::endl;
   stream << "temperature=" << temperature << std::endl;
 
   // check routine settings
