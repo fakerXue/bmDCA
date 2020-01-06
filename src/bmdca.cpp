@@ -14,7 +14,6 @@ main(int argc, char* argv[])
   std::string dest_dir;
   bool reweight = false;
   bool dest_dir_given = false;
-  bool use_pos_reg = false;
 
   // Read command-line parameters
   char c;
@@ -39,9 +38,6 @@ main(int argc, char* argv[])
       case 'r':
         reweight = true;
         break;
-      case 'p':
-        use_pos_reg = true;
-        break;
       case '?':
         std::cerr << "ERROR: Incorrect command line usage." << std::endl;
     }
@@ -59,13 +55,13 @@ main(int argc, char* argv[])
   msa_stats.writeRelEntropyGradient(dest_dir + "/rel_ent_grad_align_1p.txt");
 
   // Initialize the MCMC using the statistics of the MSA
-  Sim sim = Sim(msa_stats, use_pos_reg);
-  // sim.load(params);
+  Sim sim = Sim(msa_stats, config_file);
 
   if (dest_dir_given == true) {
     chdir(dest_dir.c_str());
   }
 
+  sim.writeParameters("bmdca_params.conf");
   sim.run();
 
   return 0;
