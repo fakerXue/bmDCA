@@ -1,4 +1,3 @@
-// #include <armadillo>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -60,7 +59,6 @@ main(int argc, char* argv[])
   msa_stats.writeRelEntropyGradient(dest_dir + "/rel_ent_grad_align_1p.txt");
 
   // Initialize the MCMC using the statistics of the MSA
-  // Sim sim = Sim(msa_stats);
   Sim sim = Sim(msa_stats, use_pos_reg);
   // sim.load(params);
 
