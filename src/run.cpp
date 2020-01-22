@@ -234,16 +234,6 @@ Sim::Sim(MSAStats msa_stats, std::string config_file)
   mcmc = new MCMC(msa_stats.getN(), msa_stats.getQ());
 };
 
-Sim::Sim(MSAStats msa_stats, bool use_pos_reg_flag)
-  : msa_stats(msa_stats)
-  , use_pos_reg(use_pos_reg_flag)
-{
-  initializeParameters();
-  current_model = new Model(msa_stats, epsilon_0_h, epsilon_0_J);
-  previous_model = new Model(msa_stats, epsilon_0_h, epsilon_0_J);
-  mcmc = new MCMC(msa_stats.getN(), msa_stats.getQ());
-};
-
 Sim::~Sim(void)
 {
   delete current_model;

@@ -11,7 +11,6 @@
 class Sim
 {
 public:
-  Sim(MSAStats, bool = false);
   Sim(MSAStats, std::string);
   ~Sim(void);
   void run(void);
