@@ -1,11 +1,36 @@
-# Boltzmann-machine Direct Coupling Analysis (bmDCA)
+# bmDCA (alternate)
 
 Dependencies (installation instructions detailed below):
  * [GCC](https://gcc.gnu.org/) that supports the C++11 standard and
    [OpenMP](https://en.wikipedia.org/wiki/OpenMP)
  * AutoTools
  * pkg-config
- * [Armadillo](http://arma.sourceforge.net/)
+
+This repository is an alternate version of bmDCA where the Armadillo source
+files are provided. Almost all of the code is defined in header files, so there
+is no need for linking libraries at compile time.
+
+For macOS users, the default version of `gcc` is actually `clang`, a different
+compiler that doesn't support the `fopenmp` flag used for parallelization. (You
+can check this behavior by running `gcc --version`.) To install `gcc`, you can
+use Homebrew:
+
+```
+brew install gcc
+```
+
+You will then need to alias `gcc` to the path to the Homebrew version.
+
+__IMPORTANT: DON'T USE THIS REPOSITORY VIA GIT!!!!!!!__
+This repository is rebased on the master branch, meaning that if you try to
+`git pull` updates, you'll get merge conflicts. What you should do is download
+zip/tarball files from the GitHub repository webpage and re-download it if you
+want to get the latest version.
+
+This branch is a temporary measure pending a permanent cross-platform fix for
+linking Armadillo and using GCC.
+
+## About
 
 This repository contains a C++ reimplementation of bmDCA adapted from [the
 original](https://github.com/matteofigliuzzi/bmDCA) code. Method is described
@@ -33,10 +58,6 @@ __pkg-config__ is a program that provides a simple interface between installed
 programs (e.g. libraries and header files) and the compiler. It's used by
 AutoTools to check for dependencies before compilation.
 
-__Armadillo__ is a C++ linear algebra library. It's used for storing data in
-matrix structures and performing quick computations in the bmDCA inference
-loop. To install, again look to your package repository.
-
 ### Linux
 
 To install the dependencies in Linux, simply use your distributions package
@@ -48,7 +69,7 @@ Run:
 ```
 sudo apt-get update
 sudo apt-get install git gcc g++ automake autoconf pkg-config \
-  libarmadillo-dev libopenblas-dev libarpack++2-dev
+  libopenblas-dev libarpack++2-dev
 ```
 
 #### Arch Linux
@@ -58,46 +79,6 @@ metapackages (`sudo pacman -S base base-devel`), but if not installed, run:
 ```
 sudo pacman -S gcc automake autoconf pkgconf
 ```
-
-For Arch, Armadillo is not in the package repositories. You will need to check
-the AUR.
-
-First, install the SuperLU library:
-```
-git clone https://aur.archlinux.org/superlu.git
-cd superlu
-makepkg -si
-cd ..
-```
-
-SuperLU is a fast matrix factorization library required as a build dependency
-for Armadillo. Other build dependencies will be installed via `makepkg` from
-the official repositories.
-
-Now, download and install Armadillo:
-```
-git clone https://aur.archlinux.org/armadillo.git
-cd armadillo
-makepkg -si
-cd ..
-```
-
-<!-- If there is no package for Armadillo, or you do not have root privileges on the
-   - system your using, you can instead compile the library from source.
-   - 
-   - First, make sure that `cmake`, `openblas` (or `blas`), `lapack`, `arpack`, and
-   - `SuperLU` are installed. CMake is a compilation tool and the others are build
-   - dependencies. Then, to download and install Armadillo system wide, run the
-   - following:
-   - ```
-   - wget https://sourceforge.net/projects/arma/files/armadillo-9.850.1.tar.xz
-   - tar xf armadillo-9.850.1.tar.xz
-   - cd armadillo-9.850.1
-   - cmake .
-   - make -j4
-   - sudo make install
-   - cd ..
-   - ``` -->
 
 
 ### macOS
@@ -128,8 +109,10 @@ where `<user>` should be substituted with your username, e.g. `john`.
 
 Once Homebrew is installed, run:
 ```
-brew install gcc automake autoconf pkg-config armadillo
+brew install gcc automake autoconf pkg-config arpack lapack openblas
 ```
+=======
+### GCC
 
 This will install the most recent GCC (9.3.0 as of writing) along with
 AutoTools and pkg-config.
@@ -138,8 +121,7 @@ __IMPORTANT:__ The default `gcc`, located in `/usr/bin/gcc` is actually aliased
 to `clang`, which is another compiler. While in principle this is not an issue,
 this version of Clang is not compatible with the `fopenmp` compiler flag that
 is used to enable parallelization of the MCMC sampler. Additionally, libraries
-(see Armadillo in the next step) installed via Homebrew are not by default
-known to `pkg-config` or the linker.
+installed via Homebrew are not by default known to `pkg-config` or the linker.
 
 Addressing all of these issues involves overriding the `CC` and `CXX`
 environmental variables with the new GCC, updating `PKG_CONFIG_PATH` with paths
@@ -175,6 +157,7 @@ source ${HOME}/.bashrc
 Or simply open a new shell. (For remote systems, you can just log out and log
 in again.)
 
+<<<<<<< HEAD
 <!-- The files will be installed to `/usr/local/include` and `/usr/local/lib` by
    - default. This requires root privileges (hence, the `sudo make install` at the
    - end). If you want to install elsewhere, adjust the above commands:
@@ -222,8 +205,7 @@ pacman -S nano vim git \
    mingw-w64-x86_64-openmp \
    mingw-w64-x86_64-arpack \
    mingw-w64-x86_64-lapack \
-   mingw-w64-x86_64-openblas \
-   mingw-w64-x86_64-armadillo
+   mingw-w64-x86_64-openblas
 ```
 
 The above command will installed the required programs in the `/mingw64/bin`

@@ -1,16 +1,15 @@
 bin_PROGRAMS = bmdca bmdca_sample arma2ascii
 
-CXXFLAGS = -O3 -std=c++11 $(OPENMP_CXXFLAGS) $(ARMADILLO_CFLAGS) \
-           -DARMA_DONT_USE_HDF5
+CXXFLAGS = -O3 -std=c++11 $(OPENMP_CXXFLAGS)
 if LINUX
-AM_LDFLAGS = -lm $(ARMADILLO_LIBS) -lopenblas -llapack
+AM_LDFLAGS = -lm -lopenblas -llapack
 endif
 if MACOS
-AM_LDFLAGS = -lm $(ARMADILLO_LIBS) -framework Accelerate
+AM_LDFLAGS = -lm -framework Accelerate
 endif
 if WINDOWS
 AM_LDFLAGS = -static -static-libgcc -static-libstdc++ \
-             -lm $(ARMADILLO_LIBS).dll -lopenblas -llapack
+             -lm -lopenblas -llapack
 endif
 
 DISTCLEANFILES = Makefile.in

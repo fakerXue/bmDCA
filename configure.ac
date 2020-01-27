@@ -47,16 +47,6 @@ AX_CXX_COMPILE_STDCXX([11], [noext], [mandatory])
 PKG_PROG_PKG_CONFIG
 
 # Check for required libraries and headers.
-PKG_CHECK_MODULES(
-  [ARMADILLO],
-  [armadillo],
-  [],
-  [AC_CHECK_HEADERS(
-    [armadillo],
-    [],
-    [AC_MSG_ERROR("missing armadillo")],
-    [])
-  ])
 AC_OPENMP
 AC_CHECK_HEADERS(
   [stdio.h assert.h],
