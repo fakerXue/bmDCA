@@ -52,6 +52,7 @@ Sim::initializeParameters(void)
   coherence_min = 0.9999;
 
   // mcmc settings
+  use_ss = false;
   M = 1000;            // importance sampling max iterations
   count_max = 10;      // number of independent MCMC runs
   init_sample = false; // flag to load first position for mcmc seqs
@@ -66,6 +67,13 @@ Sim::initializeParameters(void)
 
 void
 Sim::checkParameters(void) {
+  // If using stochastic sampling, set M to match the effective number of
+  // sequences.
+  if (use_ss) {
+    M = 1;
+    count_max = (int)(round(msa_stats.getEffectiveM()));
+  }
+
   // Ensure that the set of ergodiciy checks is disabled if M=1
   if ((M == 1) && check_ergo) {
     check_ergo = false;
@@ -110,6 +118,7 @@ Sim::writeParameters(std::string output_file)
   stream << "coherence_min=" << coherence_min << std::endl;
 
   // mcmc settings
+  stream << "use_ss=" << use_ss << std::endl;
   stream << "M=" << M << std::endl;
   stream << "count_max=" << count_max << std::endl;
   stream << "init_sample=" << init_sample << std::endl;
@@ -196,6 +205,12 @@ Sim::setParameter(std::string key, std::string value)
     step_importance_max = std::stoi(value);
   } else if (key == "coherence_min") {
     coherence_min = std::stod(value);
+  } else if (key == "use_ss") {
+    if (value.size() == 1) {
+      use_ss = (std::stoi(value) == 1);
+    } else {
+      use_ss = (value == "true");
+    }
   } else if (key == "M") {
     M = std::stoi(value);
   } else if (key == "count_max") {
