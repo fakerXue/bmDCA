@@ -22,9 +22,13 @@ position-specific regularization when learning couplings.
 
 ### Armadillo
 
-Armadillo is a C++ linear algebra library. It can be installed using the
-standard package repositories for most Linux distributions (check AUR for Arch
-Linux) and Homebrew on macOS (`brew install armadillo`).
+Armadillo is a C++ linear algebra library.
+
+#### Package repositories
+
+Armadillo can be installed using the standard package repositories for most
+Linux distributions (check AUR for Arch Linux) and Homebrew on macOS (`brew
+install armadillo`).
 
 __Note for macOS users__: bmDCA depends on `pkg-config` for finding paths for
 source files and shared object libraries. The directories where the program
@@ -40,7 +44,7 @@ in `LD_LIBRARY_PATH`. To add the armadillo `lib/` directory to this variable,
 append to the variable yourself, or you can use the `ld_path_add()` function,
 also defined in the `tools/rcparams` file.
 
-__OR__
+#### Manual
 
 If a compiled package is not available, you will need to install it
 manually. First, make sure that `cmake`, `openblas` (or `blas`), `lapack`,
@@ -58,7 +62,7 @@ sudo make install
 
 The files will be installed to `/usr/local/include` and `/usr/local/lib` by
 default. Make sure that both directories are in your `PKG_CONFIG_PATH` and
-`LD_LIBRARY_PATH` environmental variables.
+`LD_LIBRARY_PATH` environment variables.
 
 ### GCC
 
