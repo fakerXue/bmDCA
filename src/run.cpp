@@ -921,7 +921,7 @@ Sim::initializeRunLog()
          << "\t"
          << "seed"
          << "\t"
-         << "step time" << std::endl;
+         << "step-time" << std::endl;
   stream.close();
 };
 
