@@ -355,11 +355,12 @@ Sim::run(void)
 
     // Sampling from MCMC (keep trying until correct properties found)
     bool flag_mc = true;
+    long int seed;
     while (flag_mc) {
       // Draw from MCMC
       std::cout << "sampling model with mcmc... " << std::flush;
       timer.tic();
-      long int seed = dist(rng);
+      seed = dist(rng);
       run_buffer.at((step - 1) % save_parameters, 17) = seed;
       if (init_sample) {
         mcmc->sample_init(&samples,
@@ -373,7 +374,7 @@ Sim::run(void)
                           temperature);
       } else {
         mcmc->sample(
-          &samples, count_max, M, N, t_wait, delta_t, dist(rng), temperature);
+          &samples, count_max, M, N, t_wait, delta_t, seed, temperature);
       }
       std::cout << timer.toc() << " sec" << std::endl;
 
