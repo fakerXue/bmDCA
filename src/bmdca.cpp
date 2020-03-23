@@ -31,12 +31,13 @@ main(int argc, char* argv[])
   bool reweight = false;  // if true, weight sequences by similarity
   bool numeric_msa_given = false;
   bool input_file_given = false;
+  bool force_restart = false;
   bool weight_given = false;
   double threshold = 0.8;
 
   // Read command-line parameters.
   char c;
-  while ((c = getopt(argc, argv, "c:d:hi:n:rt:w:")) != -1) {
+  while ((c = getopt(argc, argv, "c:d:fhi:n:rt:w:")) != -1) {
     switch (c) {
       case 'c':
         config_file = optarg;
@@ -49,6 +50,9 @@ main(int argc, char* argv[])
             mkdir(dest_dir.c_str(), 0700);
           }
         }
+        break;
+      case 'f':
+        force_restart = true;
         break;
       case 'h':
         print_usage();
@@ -92,7 +96,7 @@ main(int argc, char* argv[])
     msa_stats.writeRelEntropyGradient(dest_dir + "/rel_ent_grad_align_1p.txt");
 
     // Initialize the MCMC using the statistics of the MSA.
-    Sim sim = Sim(msa_stats, config_file, dest_dir);
+    Sim sim = Sim(msa_stats, config_file, dest_dir, force_restart);
     sim.writeParameters("bmdca_params.conf");
     sim.run();
   } else if (numeric_msa_given) {
@@ -107,7 +111,7 @@ main(int argc, char* argv[])
     msa_stats.writeRelEntropyGradient(dest_dir + "/rel_ent_grad_align_1p.txt");
 
     // Initialize the MCMC using the statistics of the MSA.
-    Sim sim = Sim(msa_stats, config_file, dest_dir);
+    Sim sim = Sim(msa_stats, config_file, dest_dir, force_restart);
     sim.writeParameters("bmdca_params.conf");
     sim.run();
   } else if (input_file_given) {
@@ -123,7 +127,7 @@ main(int argc, char* argv[])
     msa_stats.writeRelEntropyGradient(dest_dir + "/rel_ent_grad_align_1p.txt");
 
     // Initialize the MCMC using the statistics of the MSA.
-    Sim sim = Sim(msa_stats, config_file, dest_dir);
+    Sim sim = Sim(msa_stats, config_file, dest_dir, force_restart);
     sim.writeParameters("bmdca_params.conf");
     sim.run();
   } else {
