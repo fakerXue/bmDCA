@@ -526,7 +526,7 @@ Sim::setStepOffset(void) {
 
 void
 Sim::setBurnTimes(void) {
-  std::ifstream stream("bmdca_run.log");
+  std::ifstream stream(run_log_file);
   std::string line;
   std::getline(stream, line);
   while (!stream.eof()) {
@@ -559,7 +559,7 @@ Sim::~Sim(void)
 void
 Sim::burnRNG(void) {
   long int value;
-  std::ifstream stream("bmdca_run.log");
+  std::ifstream stream(run_log_file);
   std::string line;
   std::getline(stream, line);
   while (!stream.eof()) {
@@ -1252,7 +1252,7 @@ Sim::writeData(std::string id)
 void
 Sim::initializeRunLog()
 {
-  std::ofstream stream{ "bmdca_run.log", std::ios_base::out };
+  std::ofstream stream{ run_log_file, std::ios_base::out };
   stream << "step"
          << "\t"
          << "reps"
@@ -1298,7 +1298,7 @@ Sim::initializeRunLog()
 void
 Sim::writeRunLog(int current_step)
 {
-  std::ofstream stream{ "bmdca_run.log", std::ios_base::app };
+  std::ofstream stream{ run_log_file, std::ios_base::app };
 
   int n_entries;
   if (current_step == 0) {
