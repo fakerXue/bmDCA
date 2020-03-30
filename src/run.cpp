@@ -410,11 +410,8 @@ Sim::Sim(MSAStats msa_stats,
   if ((!force_restart) & (checkFileExists(hyperparameter_file))) {
     if (!compareParameters(hyperparameter_file)) {
       std::cerr << "ERROR: current and previous hyperparameters mismatched. "
-                   "restarting... "
                 << std::endl;
-      step_offset = 0;
-      clearFiles(".");
-      writeParameters(hyperparameter_file);
+      std::exit(EXIT_FAILURE);
     } else {
       setStepOffset();
     }
@@ -694,7 +691,7 @@ Sim::readInitialSample(int N, int Q)
   if (!input_stream) {
     std::cerr << "ERROR: cannot read '" << init_sample_file << "'."
               << std::endl;
-    exit(2);
+    std::exit(EXIT_FAILURE);
   }
 
   std::string line;
