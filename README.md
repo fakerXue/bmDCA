@@ -502,10 +502,12 @@ Inference and sampling runs can be configured using a text file (see
 26. `init_sample` - flag for whether of not to use seed sequence for
     initializing the MCMC (default: false)
 27. `init_sample_file` - file containing the MCMC seed sequences (default: "")
-28. `use_pos_reg` - flag to apply position-specific regularization when
+28. `sampler` - sampler mode, 'mh' for Metropolis-Hastings and 'z' for Zanella,
+    2019 (default: "mh")
+29. `use_pos_reg` - flag to apply position-specific regularization when
     learning J (default: false)
-29. `temperature` - temperature at which to sample sequences (default: 1.0)
-30. `output_binary` - flag to output data in binary format, which is faster and
+30. `temperature` - temperature at which to sample sequences (default: 1.0)
+31. `output_binary` - flag to output data in binary format, which is faster and
     more precise (default: false)
 
 ### [sampling]
@@ -518,7 +520,9 @@ Inference and sampling runs can be configured using a text file (see
 5. `adapt_up_time` - multiple to increase MCMC wait/burn-in time (default: 1.5)
 6. `adapt_down_time` - multiple to decrease MCMC wait/burn-in time (default
    0.6)
-7. `temperature` - temperature at which to sample sequences (default: 1.0)
+7. `sampler` - sampler mode, 'mh' for Metropolis-Hastings and 'z' for Zanella,
+   2019 (default: "mh")
+8. `temperature` - temperature at which to sample sequences (default: 1.0)
 
 ## Output files
 
