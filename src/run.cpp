@@ -121,6 +121,7 @@ Sim::writeParameters(std::string output_file)
   stream << "count_max=" << count_max << std::endl;
   stream << "init_sample=" << init_sample << std::endl;
   stream << "init_sample_file=" << init_sample_file << std::endl;
+  stream << "sampler=" << sampler << std::endl;
   stream << "use_pos_reg=" << use_pos_reg << std::endl;
   stream << "temperature=" << temperature << std::endl;
 
@@ -271,6 +272,8 @@ Sim::compareParameter(std::string key, std::string value)
     }
   } else if (key == "init_sample_file") {
     same = same & (init_sample_file == value);
+  } else if (key == "sampler") {
+    same = same & (sampler == value);
   } else if (key == "use_pos_reg") {
     if (value.size() == 1) {
       same = same & (use_pos_reg == (std::stoi(value) == 1));
@@ -363,6 +366,8 @@ Sim::setParameter(std::string key, std::string value)
     }
   } else if (key == "init_sample_file") {
     init_sample_file = value;
+  } else if (key == "sampler") {
+    sampler = value;
   } else if (key == "use_pos_reg") {
     if (value.size() == 1) {
       use_pos_reg = (std::stoi(value) == 1);
@@ -778,18 +783,23 @@ Sim::run(void)
       timer.tic();
       seed = dist(rng);
       run_buffer.at((step - 1) % save_parameters, 17) = seed;
-      if (init_sample) {
-        mcmc->sample_init(&samples,
-                          count_max,
-                          M,
-                          N,
-                          t_wait,
-                          delta_t,
-                          &initial_sample,
-                          seed,
-                          temperature);
-      } else {
-        mcmc->sample(
+      if (sampler == "mh") {
+        if (init_sample) {
+          mcmc->sample_init(&samples,
+                            count_max,
+                            M,
+                            N,
+                            t_wait,
+                            delta_t,
+                            &initial_sample,
+                            seed,
+                            temperature);
+        } else {
+          mcmc->sample(
+            &samples, count_max, M, N, t_wait, delta_t, seed, temperature);
+        }
+      } else if (sampler == "z") {
+        mcmc->sample_zanella(
           &samples, count_max, M, N, t_wait, delta_t, seed, temperature);
       }
       std::cout << timer.toc() << " sec" << std::endl;
