@@ -1298,7 +1298,7 @@ Sim::updateReparameterization(void)
         }
       }
     }
-  };
+  }
 
   arma::Mat<double> Dh = arma::Mat<double>(Q, N, arma::fill::zeros);
   for (int i = 0; i < N; i++) {
@@ -1320,7 +1320,7 @@ Sim::updateReparameterization(void)
         }
       }
     }
-  };
+  }
 
   for (int i = 0; i < N; i++) {
     for (int a = 0; a < Q; a++) {
