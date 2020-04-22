@@ -507,8 +507,7 @@ Inference and sampling runs can be configured using a text file (see
     `sqrt(t)`, and 'z-barker' corresponds to `t/(1+t)`. (default: "mh")
 29. `use_pos_reg` - flag to apply position-specific regularization when
     learning J (default: false)
-30. `temperature` - temperature at which to sample sequences (default: 1.0)
-31. `output_binary` - flag to output data in binary format, which is faster and
+30. `output_binary` - flag to output data in binary format, which is faster and
     more precise (default: false)
 
 ### [sampling]

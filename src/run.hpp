@@ -84,7 +84,6 @@ private:
   std::string init_sample_file; // name of file with mcmc initial sample
   std::string sampler = "mh";   // MC sampler type ('mh' or 'z')
   bool use_pos_reg = false;     // enable for position-specific regularizetion
-  double temperature;           // temperature at which to sample potts model
 
   bool output_binary = false;
 
